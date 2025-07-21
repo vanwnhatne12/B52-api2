@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Response
 import requests
 
-app = Flask(name)
+app = Flask(__name__)
 
 SECRET_KEY = "ditmemaythichbucukhong"  # Key bí mật bạn đặt
 
