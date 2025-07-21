@@ -1,19 +1,18 @@
 from flask import Flask, request, jsonify, Response
 import requests
-import os
 
 app = Flask(__name__)
 
-# Khóa bí mật để truy cập API
-SECRET_KEY = "ditmemaythichbucukhong"
+# 🔐 Key bí mật
+SECRET_KEY = "bucacditme"
 
-# Route mặc định để kiểm tra hoạt động
+# ✅ Route test root
 @app.route("/")
 def home():
     return "✅ B52 API của @VanwNhat đã chạy thành công trên Render!"
 
-# API chính
-@app.route("/api/lc79@VanwNhat", methods=["GET"])
+# ✅ Route chính
+@app.route("/api/b52th@VanwNhat", methods=["GET"])
 def hidden_api():
     key = request.args.get("key")
 
@@ -25,13 +24,20 @@ def hidden_api():
         )
 
     try:
-        # Gọi API gốc
-        response = requests.get("https://toolhth.site/b52th.php", headers={
-            "X-Requested-With": "XMLHttpRequest"
-        })
+        # ⚠️ Thêm User-Agent để tránh bị chặn
+        headers = {
+            "X-Requested-With": "XMLHttpRequest",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115.0.0.0 Safari/537.36"
+        }
+
+        response = requests.get(
+            "https://toolhth.site/b52th.php",
+            headers=headers,
+            timeout=5  # Giới hạn thời gian kết nối
+        )
+
         data = response.json()
 
-        # Trả kết quả định dạng JSON
         result = {
             "phien": data.get("current_session"),
             "ket_qua": data.get("current_result"),
@@ -48,7 +54,6 @@ def hidden_api():
             "chi_tiet": str(e)
         }), 500
 
-# Chạy app với PORT do Render cấp
+# ✅ Khởi chạy app Flask
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 3000))  # Render sẽ gán PORT tự động
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=3000)
